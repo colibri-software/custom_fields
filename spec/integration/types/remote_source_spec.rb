@@ -23,11 +23,9 @@ describe CustomFields::Types::RemoteSource do
     end
     
     it 'validates a source as a URI' do
-      @source_field.required = true
-      @source_field.save!
       @post.source = 'not a uri'
-      debugger
-      @post.save!.should be_false
+      @post.should_not be_valid
+      @post.errors['source'].should_not be_blank
     end
     
 
@@ -65,7 +63,7 @@ describe CustomFields::Types::RemoteSource do
   def create_blog
     Blog.new(:name => 'My personal blog').tap do |blog|
       blog.posts_custom_fields.build :label => 'author', :type => 'string'
-      @source_field = blog.posts_custom_fields.build :label => 'source', :type => 'remote_source'
+      @source_field = blog.posts_custom_fields.build :label => 'source', :type => 'remote_source', :required => true
       blog.save & blog.reload
     end
   end

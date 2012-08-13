@@ -28,6 +28,12 @@ describe CustomFields::Types::RemoteSource do
       @post.errors['source'].should_not be_blank
     end
     
+     it 'sets the expiry time' do
+      @post.source_expiry = 'not a uri'
+      @post.should_not be_valid
+      @post.errors['source'].should_not be_blank
+    end
+    
 
   end
 

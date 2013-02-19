@@ -40,6 +40,7 @@ module CustomFields
         when :file                    then [rule['name'], "remove_#{rule['name']}"]
         when :select, :belongs_to     then ["#{rule['name']}_id", "position_in_#{rule['name']}"]
         when :has_many, :many_to_many then nil
+        when :remote_source           then [rule['name'], "#{rule['name']}_expiry"]
         else
           rule['name']
         end
@@ -109,6 +110,7 @@ module CustomFields
       when :date        then "formatted_#{name}"
       when :file        then "#{name}_url"
       when :belongs_to  then "#{name}_id"
+      when :remote_source then [name, "#{name}_expiry"]
       else
         name
       end

@@ -25,6 +25,12 @@ describe CustomFields::Types::Date do
     @post.posted_at.should == @date
   end
 
+  it 'sets nil from an invalid string' do
+    I18n.stubs(:t).returns('%d/%m/%Y')
+    @post.formatted_posted_at = '12345'
+    @post.posted_at.should be_nil
+  end
+
   it 'sets nil value' do
     @post.posted_at = nil
     @post.posted_at.should be_nil
@@ -53,6 +59,35 @@ describe CustomFields::Types::Date do
       Mongoid::Fields::I18n.locale = :fr
       post.visible_at = '16/09/2010'
       post.visible_at_translations['fr'].should == Date.parse('2010/09/16')
+    end
+
+  end
+
+
+  describe 'getter and setter' do
+
+    it 'returns an empty hash if no value has been set' do
+      @post.class.date_attribute_get(@post, 'posted_at').should == {}
+    end
+
+    it 'returns the value' do
+      @post.posted_at = Date.parse('2010-06-29')
+      @post.class.date_attribute_get(@post, 'posted_at').should == {
+        'posted_at'           => '2010-06-29',
+        'formatted_posted_at' => '2010-06-29'
+      }
+    end
+
+    it 'sets a nil value' do
+      @post.class.date_attribute_set(@post, 'posted_at', {}).should be_nil
+    end
+
+    it 'sets a value' do
+      @post.class.date_attribute_set(@post, 'posted_at', { 'posted_at' => '2010-06-28' })
+      @post.posted_at.should == Date.parse('2010-06-28')
+
+      @post.class.date_attribute_set(@post, 'posted_at', { 'formatted_posted_at' => '2010-06-29' })
+      @post.posted_at.should == Date.parse('2010-06-29')
     end
 
   end

@@ -11,6 +11,7 @@ fr:
       has_many: A plusieurs
       many_to_many: A plusieurs et appartient à
       tag_set: Tags
+      remote_source: Source à distance
     text_formatting:
       none: Aucun
       html: HTML

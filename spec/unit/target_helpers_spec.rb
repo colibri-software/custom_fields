@@ -164,6 +164,11 @@ describe CustomFields::TargetHelpers do
       @post.class.expects(:many_to_many_attribute_set).never
       @post.custom_fields_basic_attributes = {}
     end
+    
+    it 'includes attributes for remote_source' do
+      @safe_attributes.include?('twitter').should be_true
+      @safe_attributes.include?('twitter_expiry').should be_true
+    end
 
   end
 
@@ -181,6 +186,11 @@ describe CustomFields::TargetHelpers do
 
     it 'also includes another method name for select (<name>_id)' do
       @methods.include?('category_id').should be_true
+    end
+    
+    it 'includes the method names for remote_soruce' do
+      @methods.include?('twitter').should be_true
+      @methods.include?('twitter_expiry').should be_true
     end
 
     it 'includes the method name for files' do
@@ -228,7 +238,8 @@ describe CustomFields::TargetHelpers do
           { 'name' => 'contributors',     'type' => 'many_to_many', 'class_name' => 'Person', 'inverse_of' => 'posts', 'required' => false, 'localized' => false },
           { 'name' => 'projects',         'type' => 'has_many', 'class_name' => 'Project', 'inverse_of' => 'project', 'required' => false, 'localized' => false },
           { 'name' => 'illustrations',    'type' => 'has_many', 'class_name' => 'PostImage', 'inverse_of' => 'project', 'required' => false, 'localized' => false },
-          { 'name' => 'tags',             'type' => 'tag_set', 'required' => false, 'localized' => false }
+          { 'name' => 'tags',             'type' => 'tag_set', 'required' => false, 'localized' => false },
+          { 'name' => 'twitter',          'type' => 'remote_source', 'required' => false, 'localized' => false }
         ]})
     end
   end

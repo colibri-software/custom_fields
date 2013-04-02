@@ -11,3 +11,4 @@ en:
       has_many: Has many
       many_to_many: Many To Many
       tag_set: Tags
+      remote_source: Remote Source
